@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { Users } from 'src/model/users.model'
 import { JwtModule } from '@nestjs/jwt'
 import { ConfigModule } from '@nestjs/config'
+import { JwtStrategy } from './passport/passport'
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -18,6 +19,6 @@ import { ConfigModule } from '@nestjs/config'
     }),
   ],
   controllers: [LoginController],
-  providers: [LoginService, LoginRepository],
+  providers: [LoginService, LoginRepository, JwtStrategy],
 })
 export class LoginModule {}

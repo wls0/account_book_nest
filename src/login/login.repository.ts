@@ -22,7 +22,6 @@ export class LoginRepository {
   async vaildate(index: string) {
     const user = await this.userModel.findOneBy({ index })
     if (user) {
-      const { index } = user
       return index
     } else {
       return false
