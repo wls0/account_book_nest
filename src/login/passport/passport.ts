@@ -18,7 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const { index } = payload
     const user = await this.loginRepository.vaildate(index)
     if (user) {
-      return user
+      return payload
     } else {
       throw new ForbiddenException()
     }
