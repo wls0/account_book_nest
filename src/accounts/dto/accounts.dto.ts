@@ -1,12 +1,11 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator'
-
 export class DateResDTO {
   @IsString()
   @IsNotEmpty()
   date: string
 }
 
-export class writeAccountResDTO {
+export class WriteAccountResDTO {
   @IsString()
   @IsNotEmpty()
   bigCategory: string
