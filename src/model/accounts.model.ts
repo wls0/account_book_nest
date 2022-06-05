@@ -13,9 +13,11 @@ export class Accounts {
   @PrimaryGeneratedColumn()
   index: number
 
-  @ManyToOne(() => Users, (user) => user.index)
-  @Column('varchar')
-  userIndex: string
+  @ManyToOne(() => Users, (user) => user.accounts, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  user: string
 
   @Column('varchar')
   bigCategory: string

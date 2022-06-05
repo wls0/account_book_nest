@@ -20,7 +20,6 @@ import { Accounts } from './accounts.model'
 @Unique(['id'])
 export class Users {
   @PrimaryGeneratedColumn('uuid')
-  @OneToMany(() => Accounts, (accounts) => accounts.userIndex)
   @IsNotEmpty()
   @IsString()
   index: string
@@ -51,4 +50,7 @@ export class Users {
   @IsDate()
   @UpdateDateColumn()
   updateAt: Date
+
+  @OneToMany(() => Accounts, (accounts) => accounts.user)
+  accounts: Accounts[]
 }
