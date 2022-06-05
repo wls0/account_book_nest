@@ -5,7 +5,10 @@ import {
   Length,
   Matches,
 } from 'class-validator'
-
+export class AccountIndexResDTO {
+  @IsNotEmpty()
+  index: number
+}
 export class DateResDTO {
   @IsString()
   @IsNotEmpty()
@@ -49,9 +52,17 @@ export class WriteAccountResDTO {
   cost: number
 }
 
-export class AccountsListDTO extends DayResDTO {
+export class FindAccountsListResDTO extends DayResDTO {
   @IsString()
   @IsNotEmpty()
   @Matches(/^(cash|shinhan|samsung|hyundai|woori|lotte|kb)$/)
   card: string
+}
+
+export class UpdateAccountResDTO extends WriteAccountResDTO {
+  @IsString()
+  @IsNotEmpty()
+  @Length(10)
+  @Matches(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/)
+  date: string
 }

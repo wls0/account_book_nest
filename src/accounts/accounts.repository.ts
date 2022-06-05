@@ -4,9 +4,11 @@ import { Payload } from 'src/login/passport/jwt.payload'
 import { Accounts } from 'src/model/accounts.model'
 import { Repository } from 'typeorm'
 import {
-  AccountsListDTO,
+  FindAccountsListResDTO,
   DateResDTO,
   WriteAccountResDTO,
+  AccountIndexResDTO,
+  UpdateAccountResDTO,
 } from './dto/accounts.dto'
 
 @Injectable()
@@ -54,7 +56,7 @@ export class AccountsRepository {
     }
   }
 
-  async ShinhanCost(user: Payload, param: DateResDTO) {
+  async shinhanCost(user: Payload, param: DateResDTO) {
     const { index } = user
     const { date } = param
     const { cost } = await this.accountModel
@@ -71,7 +73,7 @@ export class AccountsRepository {
     }
   }
 
-  async SamsungCost(user: Payload, param: DateResDTO) {
+  async samsungCost(user: Payload, param: DateResDTO) {
     const { index } = user
     const { date } = param
     const { cost } = await this.accountModel
@@ -88,7 +90,7 @@ export class AccountsRepository {
     }
   }
 
-  async HyundaiCost(user: Payload, param: DateResDTO) {
+  async hyundaiCost(user: Payload, param: DateResDTO) {
     const { index } = user
     const { date } = param
     const { cost } = await this.accountModel
@@ -105,7 +107,7 @@ export class AccountsRepository {
     }
   }
 
-  async WooriCost(user: Payload, param: DateResDTO) {
+  async wooriCost(user: Payload, param: DateResDTO) {
     const { index } = user
     const { date } = param
     const { cost } = await this.accountModel
@@ -122,7 +124,7 @@ export class AccountsRepository {
     }
   }
 
-  async LotteCost(user: Payload, param: DateResDTO) {
+  async lotteCost(user: Payload, param: DateResDTO) {
     const { index } = user
     const { date } = param
     const { cost } = await this.accountModel
@@ -156,7 +158,7 @@ export class AccountsRepository {
     }
   }
 
-  async RevenueCost(user: Payload, param: DateResDTO) {
+  async revenueCost(user: Payload, param: DateResDTO) {
     const { index } = user
     const { date } = param
     const { cost } = await this.accountModel
@@ -173,7 +175,7 @@ export class AccountsRepository {
     }
   }
 
-  async UseCardList(user: Payload, param: AccountsListDTO) {
+  async useCardList(user: Payload, param: FindAccountsListResDTO) {
     const { index } = user
     const { date, card } = param
     const list = await this.accountModel
@@ -200,5 +202,47 @@ export class AccountsRepository {
       })
     }
     return result
+  }
+
+  async selectAccount(user: string, index: number) {
+    const check = await this.accountModel
+      .createQueryBuilder('accounts')
+      .where('accounts.user = :user', { user })
+      .andWhere('accounts.index = :index', { index })
+      .getRawOne()
+    if (check) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  async updateAccount(param: AccountIndexResDTO, body: UpdateAccountResDTO) {
+    try {
+      const { index } = param
+      const { bigCategory, smallCategory, cost, card, date } = body
+      await this.accountModel
+        .createQueryBuilder()
+        .update(Accounts)
+        .set({ bigCategory, smallCategory, cost, card, date })
+        .where('accounts.index = :index', { index })
+        .execute()
+    } catch (E) {
+      throw new InternalServerErrorException()
+    }
+  }
+
+  async deleteAccount(param: AccountIndexResDTO) {
+    try {
+      const { index } = param
+      await this.accountModel
+        .createQueryBuilder()
+        .delete()
+        .from(Accounts)
+        .where('accounts.index = :index', { index })
+        .execute()
+    } catch (E) {
+      throw new InternalServerErrorException()
+    }
   }
 }
